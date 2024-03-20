@@ -2,10 +2,31 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Fystics {
-    private static ArrayList<String> stockKacamata = new ArrayList<>();
-    private static Scanner scanner = new Scanner(System.in);
+    private ArrayList<Kacamata> stockKacamata = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public ArrayList<Kacamata> getStockKacamata() {
+        return stockKacamata;
+    }
+
+    public void setStockKacamata(ArrayList<Kacamata> stockKacamata) {
+        this.stockKacamata = stockKacamata;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     public static void main(String[] args) {
+        Fystics fystics = new Fystics();
+        fystics.runApp();
+    }
+
+    public void runApp() {
         boolean appIsRunning = true;
         while (appIsRunning) {
             System.out.println("=== FYStics Optik ===");
@@ -16,7 +37,7 @@ public class Fystics {
             System.out.println("5. Keluar");
             System.out.print("Pilih menu: ");
             int menuChoice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             switch (menuChoice) {
                 case 1:
@@ -41,50 +62,86 @@ public class Fystics {
         scanner.close();
     }
 
-    private static void tambahStokKacamata() {
+    private void tambahStokKacamata() {
         System.out.println("\nTambah Data Stok Kacamata");
         System.out.print("Masukkan nama kacamata: ");
         String namaKacamata = scanner.nextLine();
-        stockKacamata.add(namaKacamata);
+        System.out.print("Masukkan harga kacamata: ");
+        double hargaKacamata = scanner.nextDouble();
+        scanner.nextLine();
+        Kacamata kacamata = new Kacamata(namaKacamata, hargaKacamata);
+        stockKacamata.add(kacamata);
         System.out.println("Stok kacamata berhasil ditambahkan.");
     }
 
-    private static void tampilkanSemuaStokKacamata() {
+    private void tampilkanSemuaStokKacamata() {
         System.out.println("\nSemua Data Stok Kacamata di FYStics Optik:");
         if (stockKacamata.isEmpty()) {
             System.out.println("Stok kacamata kosong.");
         } else {
-            for (String kacamata : stockKacamata) {
-                System.out.println("- " + kacamata);
+            for (Kacamata kacamata : stockKacamata) {
+                System.out.println("- " + kacamata.getNamaKacamata() + " (Rp" + kacamata.getHargaKacamata() + ")");
             }
         }
     }
-    
 
-    private static void perbaruiStokKacamata() {
+    private void perbaruiStokKacamata() {
         System.out.println("\nPerbarui Data Stok Kacamata");
         System.out.print("Masukkan nama kacamata yang akan diperbarui: ");
         String oldKacamata = scanner.nextLine();
         System.out.print("Masukkan nama kacamata baru: ");
         String newKacamata = scanner.nextLine();
-        if (stockKacamata.contains(oldKacamata)) {
-            int index = stockKacamata.indexOf(oldKacamata);
-            stockKacamata.set(index, newKacamata);
-            System.out.println("Data stok kacamata berhasil diperbarui.");
-        } else {
-            System.out.println("Data stok kacamata tidak ditemukan.");
+        System.out.print("Masukkan harga kacamata baru: ");
+        double newHarga = scanner.nextDouble();
+        scanner.nextLine();
+        for (Kacamata kacamata : stockKacamata) {
+            if (kacamata.getNamaKacamata().equals(oldKacamata)) {
+                kacamata.setNamaKacamata(newKacamata);
+                kacamata.setHargaKacamata(newHarga);
+                System.out.println("Data stok kacamata berhasil diperbarui.");
+                return;
+            }
         }
+        System.out.println("Data stok kacamata tidak ditemukan.");
     }
 
-    private static void hapusStokKacamata() {
+    private void hapusStokKacamata() {
         System.out.println("\nHapus Data Stok Kacamata");
         System.out.print("Masukkan nama kacamata yang akan dihapus: ");
         String kacamataToRemove = scanner.nextLine();
-        if (stockKacamata.contains(kacamataToRemove)) {
-            stockKacamata.remove(kacamataToRemove);
-            System.out.println("Data stok kacamata berhasil dihapus.");
-        } else {
-            System.out.println("Data stok kacamata tidak ditemukan.");
+        for (Kacamata kacamata : stockKacamata) {
+            if (kacamata.getNamaKacamata().equals(kacamataToRemove)) {
+                stockKacamata.remove(kacamata);
+                System.out.println("Data stok kacamata berhasil dihapus.");
+                return;
+            }
         }
+        System.out.println("Data stok kacamata tidak ditemukan.");
+    }
+}
+
+class Kacamata {
+    private String namaKacamata;
+    private double hargaKacamata;
+
+    public Kacamata(String namaKacamata, double hargaKacamata) {
+        this.namaKacamata = namaKacamata;
+        this.hargaKacamata = hargaKacamata;
+    }
+
+    public String getNamaKacamata() {
+        return namaKacamata;
+    }
+
+    public void setNamaKacamata(String namaKacamata) {
+        this.namaKacamata = namaKacamata;
+    }
+
+    public double getHargaKacamata() {
+        return hargaKacamata;
+    }
+
+    public void setHargaKacamata(double hargaKacamata) {
+        this.hargaKacamata = hargaKacamata;
     }
 }
